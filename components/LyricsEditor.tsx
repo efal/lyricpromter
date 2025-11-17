@@ -15,7 +15,7 @@ const MAX_FONT_SIZE = 128;
 
 const SCROLL_SPEED_STEP = 0.1;
 const MIN_SCROLL_SPEED = 0.1;
-const MAX_SCROLL_SPEED = 10.0;
+const MAX_SCROLL_SPEED = 20.0;
 
 const LyricsEditor: React.FC<LyricsEditorProps> = ({ song, onSave, onStart, onBack }) => {
   const [title, setTitle] = useState(song.title);
