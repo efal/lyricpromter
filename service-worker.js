@@ -1,4 +1,4 @@
-const CACHE_NAME = 'lyric-teleprompter-v5'; // Version bumped to trigger update
+const CACHE_NAME = 'lyric-teleprompter-v6'; // Version bumped to trigger update
 const urlsToCache = [
   '/',
   '/index.html',
