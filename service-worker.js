@@ -1,7 +1,10 @@
-const CACHE_NAME = 'lyric-teleprompter-v3'; // Version bumped to trigger update
+const CACHE_NAME = 'lyric-teleprompter-v4'; // Version bumped to trigger update
 const urlsToCache = [
   '/',
   '/index.html',
+  '/manifest.json',
+  '/icon-192.svg',
+  '/icon-512.svg'
 ];
 
 // Install the service worker and cache the app shell
@@ -50,8 +53,8 @@ self.addEventListener('fetch', event => {
         // Not in cache - fetch from network
         return fetch(event.request).then(
           networkResponse => {
-            // Check if we received a valid response
-            if(!networkResponse || networkResponse.status !== 200 || response.type !== 'basic' && response.type !== 'cors') {
+            // Check if we received a valid response. The bug was here (used 'response' instead of 'networkResponse').
+            if(!networkResponse || networkResponse.status !== 200 || (networkResponse.type !== 'basic' && networkResponse.type !== 'cors')) {
               return networkResponse;
             }
 
