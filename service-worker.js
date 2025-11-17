@@ -2,7 +2,7 @@ const CACHE_NAME = 'lyric-teleprompter-v1';
 const urlsToCache = [
   '/',
   '/index.html',
-  '/manifest.txt',
+  '/manifest.json',
   '/icon-192.svg',
   '/icon-512.svg',
   // You might need to add paths to your JS and CSS files if they are not inlined
