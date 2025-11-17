@@ -1,7 +1,8 @@
-const CACHE_NAME = 'lyric-teleprompter-v7'; // Version bumped to trigger update
+const CACHE_NAME = 'lyric-teleprompter-v8'; // Version bumped to trigger update
 const urlsToCache = [
   '/',
   'index.html',
+  'index.css', // Referenced in index.html
   'manifest.json',
   'icon-192.svg',
   'icon-512.svg',
@@ -11,11 +12,20 @@ const urlsToCache = [
   'index.tsx',
   'App.tsx',
   'types.ts',
+  'constants.ts', // Was missing
   'components/LyricsEditor.tsx',
   'components/LyricsDisplay.tsx',
   'components/SongLibrary.tsx',
   'components/Modal.tsx',
-  'components/icons.tsx'
+  'components/icons.tsx',
+  // External dependencies from CDN
+  'https://cdn.tailwindcss.com',
+  "https://aistudiocdn.com/react-dom@^19.2.0/",
+  "https://aistudiocdn.com/react@^19.2.0/",
+  "https://aistudiocdn.com/react@^19.2.0",
+  "https://aistudiocdn.com/path@^0.12.7",
+  "https://aistudiocdn.com/vite@^7.2.2",
+  "https://aistudiocdn.com/@vitejs/plugin-react@^5.1.1"
 ];
 
 // Install the service worker and cache the app shell and core assets
