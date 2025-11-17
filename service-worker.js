@@ -1,8 +1,7 @@
-const CACHE_NAME = 'lyric-teleprompter-v8'; // Version bumped to trigger update
+const CACHE_NAME = 'lyric-teleprompter-v9'; // Version bumped to trigger update
 const urlsToCache = [
   '/',
   'index.html',
-  'index.css', // Referenced in index.html
   'manifest.json',
   'icon-192.svg',
   'icon-512.svg',
@@ -12,20 +11,12 @@ const urlsToCache = [
   'index.tsx',
   'App.tsx',
   'types.ts',
-  'constants.ts', // Was missing
+  'constants.ts',
   'components/LyricsEditor.tsx',
   'components/LyricsDisplay.tsx',
   'components/SongLibrary.tsx',
   'components/Modal.tsx',
-  'components/icons.tsx',
-  // External dependencies from CDN
-  'https://cdn.tailwindcss.com',
-  "https://aistudiocdn.com/react-dom@^19.2.0/",
-  "https://aistudiocdn.com/react@^19.2.0/",
-  "https://aistudiocdn.com/react@^19.2.0",
-  "https://aistudiocdn.com/path@^0.12.7",
-  "https://aistudiocdn.com/vite@^7.2.2",
-  "https://aistudiocdn.com/@vitejs/plugin-react@^5.1.1"
+  'components/icons.tsx'
 ];
 
 // Install the service worker and cache the app shell and core assets
@@ -33,7 +24,7 @@ self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then(cache => {
-        console.log('Opened cache and caching app shell and core assets');
+        console.log('Opened cache and caching app shell');
         return cache.addAll(urlsToCache);
       })
   );
@@ -58,7 +49,7 @@ self.addEventListener('activate', event => {
 
 // Fetch event: serve from cache if available, otherwise fetch from network and cache the result
 self.addEventListener('fetch', event => {
-  // We only want to cache GET requests.
+  // We only want to handle GET requests.
   if (event.request.method !== 'GET') {
     return;
   }
@@ -75,7 +66,8 @@ self.addEventListener('fetch', event => {
         return fetch(event.request).then(
           networkResponse => {
             // Check if we received a valid response.
-            if(!networkResponse || networkResponse.status !== 200 || (networkResponse.type !== 'basic' && networkResponse.type !== 'cors')) {
+            // This includes successful responses from CDNs (type: 'cors')
+            if(!networkResponse || networkResponse.status !== 200) {
               return networkResponse;
             }
 
