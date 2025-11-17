@@ -1,12 +1,12 @@
 const CACHE_NAME = 'lyric-teleprompter-v6'; // Version bumped to trigger update
 const urlsToCache = [
   '/',
-  '/index.html',
-  '/manifest.json',
-  '/icon-192.svg',
-  '/icon-512.svg',
-  '/screenshot-desktop.svg',
-  '/screenshot-mobile.svg'
+  'index.html',
+  'manifest.json',
+  'icon-192.svg',
+  'icon-512.svg',
+  'screenshot-desktop.svg',
+  'screenshot-mobile.svg'
 ];
 
 // Install the service worker and cache the app shell
