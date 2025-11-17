@@ -1,4 +1,4 @@
-const CACHE_NAME = 'lyric-teleprompter-v6'; // Version bumped to trigger update
+const CACHE_NAME = 'lyric-teleprompter-v7'; // Version bumped to trigger update
 const urlsToCache = [
   '/',
   'index.html',
@@ -6,15 +6,24 @@ const urlsToCache = [
   'icon-192.svg',
   'icon-512.svg',
   'screenshot-desktop.svg',
-  'screenshot-mobile.svg'
+  'screenshot-mobile.svg',
+  // App source files
+  'index.tsx',
+  'App.tsx',
+  'types.ts',
+  'components/LyricsEditor.tsx',
+  'components/LyricsDisplay.tsx',
+  'components/SongLibrary.tsx',
+  'components/Modal.tsx',
+  'components/icons.tsx'
 ];
 
-// Install the service worker and cache the app shell
+// Install the service worker and cache the app shell and core assets
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then(cache => {
-        console.log('Opened cache and caching app shell');
+        console.log('Opened cache and caching app shell and core assets');
         return cache.addAll(urlsToCache);
       })
   );
@@ -55,7 +64,7 @@ self.addEventListener('fetch', event => {
         // Not in cache - fetch from network
         return fetch(event.request).then(
           networkResponse => {
-            // Check if we received a valid response. The bug was here (used 'response' instead of 'networkResponse').
+            // Check if we received a valid response.
             if(!networkResponse || networkResponse.status !== 200 || (networkResponse.type !== 'basic' && networkResponse.type !== 'cors')) {
               return networkResponse;
             }
@@ -73,11 +82,12 @@ self.addEventListener('fetch', event => {
 
             return networkResponse;
           }
-        ).catch(error => {
-            // This will be triggered when the network request fails, 
-            // e.g., when the user is offline.
-            console.log('Fetch failed; user is likely offline.', error);
-            // We don't return a fallback page, just let the browser handle it.
+        ).catch(() => {
+            // Fetch failed, probably offline.
+            // If it's a navigation request, serve the cached index page.
+            if (event.request.mode === 'navigate') {
+                return caches.match('/index.html');
+            }
         });
       })
   );
