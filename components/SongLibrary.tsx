@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Song } from '../types';
-import { PlayIcon, EditIcon, TrashIcon, PlusIcon } from './icons';
+import { PlayIcon, EditIcon, TrashIcon, PlusIcon, DragHandleIcon } from './icons';
 
 interface SongLibraryProps {
   songs: Song[];
@@ -9,9 +9,12 @@ interface SongLibraryProps {
   onDelete: (songId: string) => void;
   onCreate: () => void;
   onImportClick: () => void;
+  onReorder: (songs: Song[]) => void;
 }
 
-const SongLibrary: React.FC<SongLibraryProps> = ({ songs, onStart, onEdit, onDelete, onCreate, onImportClick }) => {
+const SongLibrary: React.FC<SongLibraryProps> = ({ songs, onStart, onEdit, onDelete, onCreate, onImportClick, onReorder }) => {
+    const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
+    const [dropTarget, setDropTarget] = useState<{ index: number; after: boolean } | null>(null);
 
     const handleExport = () => {
         if (songs.length === 0) {
@@ -33,6 +36,51 @@ const SongLibrary: React.FC<SongLibraryProps> = ({ songs, onStart, onEdit, onDel
             console.error("Failed to export library:", error);
             alert("An error occurred while exporting the library.");
         }
+    };
+
+    const handleDragStart = (e: React.DragEvent<HTMLLIElement>, index: number) => {
+        e.dataTransfer.effectAllowed = 'move';
+        setDraggedIndex(index);
+    };
+
+    const handleDragOver = (e: React.DragEvent<HTMLLIElement>, index: number) => {
+        e.preventDefault();
+        if (draggedIndex === null) return;
+        const rect = e.currentTarget.getBoundingClientRect();
+        const midY = rect.top + rect.height / 2;
+        setDropTarget({ index, after: e.clientY > midY });
+    };
+
+    const handleDragLeave = () => {
+        setDropTarget(null);
+    };
+
+    const handleDrop = () => {
+        if (draggedIndex === null || dropTarget === null) return;
+
+        const { index: dropIndex, after } = dropTarget;
+        
+        if (draggedIndex === dropIndex && !after) return;
+        if (draggedIndex === dropIndex - 1 && after) return;
+
+        const reorderedSongs = [...songs];
+        const [draggedSong] = reorderedSongs.splice(draggedIndex, 1);
+        
+        let newDropIndex = dropIndex;
+        if (draggedIndex < dropIndex) {
+            newDropIndex--;
+        }
+        if (after) {
+            newDropIndex++;
+        }
+
+        reorderedSongs.splice(newDropIndex, 0, draggedSong);
+        onReorder(reorderedSongs);
+    };
+    
+    const handleDragEnd = () => {
+        setDraggedIndex(null);
+        setDropTarget(null);
     };
     
     return (
@@ -57,22 +105,50 @@ const SongLibrary: React.FC<SongLibraryProps> = ({ songs, onStart, onEdit, onDel
 
             <main>
                 {songs.length > 0 ? (
-                    <ul className="space-y-3">
-                        {songs.map(song => (
-                            <li key={song.id} className="bg-gray-800 rounded-lg p-4 flex items-center justify-between hover:bg-gray-700/50 transition-colors">
-                                <div className="flex-grow overflow-hidden mr-4">
-                                    <h2 className="text-xl font-semibold truncate text-gray-100">{song.title}</h2>
-                                    <p className="text-sm text-gray-400 font-mono">
-                                        BPM: {song.bpm}, Spd: {song.scrollSpeed.toFixed(1)}x, Font: {song.fontSize}px, Thresh: {song.micThreshold}
-                                    </p>
-                                </div>
-                                <div className="flex items-center gap-2 flex-shrink-0">
-                                    <button onClick={() => onEdit(song.id)} className="p-2 rounded-full hover:bg-white/10 transition-colors" title="Edit Song"><EditIcon className="w-5 h-5"/></button>
-                                    <button onClick={() => onDelete(song.id)} className="p-2 rounded-full text-red-400 hover:bg-red-500/20 transition-colors" title="Delete Song"><TrashIcon className="w-5 h-5"/></button>
-                                    <button onClick={() => onStart(song.id)} className="p-3 rounded-full bg-cyan-600 hover:bg-cyan-500 transition-colors" title="Start Scrolling"><PlayIcon className="w-6 h-6"/></button>
-                                </div>
-                            </li>
-                        ))}
+                    <ul className="space-y-1">
+                        {songs.map((song, index) => {
+                             const isBeingDragged = draggedIndex === index;
+                             const isDropTarget = dropTarget?.index === index;
+                             const showTopBorder = isDropTarget && !dropTarget.after;
+                             const showBottomBorder = isDropTarget && dropTarget.after;
+                            return (
+                                <li 
+                                    key={song.id} 
+                                    draggable="true"
+                                    onDragStart={(e) => handleDragStart(e, index)}
+                                    onDragOver={(e) => handleDragOver(e, index)}
+                                    onDragLeave={handleDragLeave}
+                                    onDrop={handleDrop}
+                                    onDragEnd={handleDragEnd}
+                                    className={`
+                                        bg-gray-800 rounded-lg flex items-center justify-between 
+                                        hover:bg-gray-700/50 transition-all duration-200 relative
+                                        ${isBeingDragged ? 'opacity-30' : 'opacity-100'}
+                                        ${showTopBorder ? 'pt-1' : ''}
+                                        ${showBottomBorder ? 'pb-1' : ''}
+                                    `}
+                                >
+                                    {showTopBorder && <div className="absolute top-0 left-4 right-4 h-1 bg-cyan-400 rounded-full -translate-y-1/2"></div>}
+                                    <div className="flex items-center gap-3 flex-grow overflow-hidden p-4">
+                                        <div className="cursor-grab text-gray-500 hover:text-gray-300" title="Drag to reorder">
+                                            <DragHandleIcon className="w-5 h-5" />
+                                        </div>
+                                        <div className="flex-grow overflow-hidden mr-4">
+                                            <h2 className="text-xl font-semibold truncate text-gray-100">{song.title}</h2>
+                                            <p className="text-sm text-gray-400 font-mono">
+                                                BPM: {song.bpm}, Spd: {song.scrollSpeed.toFixed(1)}x, Font: {song.fontSize}px, Thresh: {song.micThreshold}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-center gap-2 flex-shrink-0 pr-4">
+                                        <button onClick={() => onEdit(song.id)} className="p-2 rounded-full hover:bg-white/10 transition-colors" title="Edit Song"><EditIcon className="w-5 h-5"/></button>
+                                        <button onClick={() => onDelete(song.id)} className="p-2 rounded-full text-red-400 hover:bg-red-500/20 transition-colors" title="Delete Song"><TrashIcon className="w-5 h-5"/></button>
+                                        <button onClick={() => onStart(song.id)} className="p-3 rounded-full bg-cyan-600 hover:bg-cyan-500 transition-colors" title="Start Scrolling"><PlayIcon className="w-6 h-6"/></button>
+                                    </div>
+                                    {showBottomBorder && <div className="absolute bottom-0 left-4 right-4 h-1 bg-cyan-400 rounded-full translate-y-1/2"></div>}
+                                </li>
+                            )
+                        })}
                     </ul>
                 ) : (
                     <div className="text-center py-16 border-2 border-dashed border-gray-700 rounded-lg">

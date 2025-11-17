@@ -240,6 +240,10 @@ const App: React.FC = () => {
     reader.readAsText(file);
   };
 
+  const handleReorderSongs = (reorderedSongs: Song[]) => {
+    setSongs(reorderedSongs);
+  };
+
   const renderContent = () => {
     if (mode === 'display' && currentSong) {
       return (
@@ -274,6 +278,7 @@ const App: React.FC = () => {
         onDelete={handleDeleteSong}
         onCreate={handleCreateNewSong}
         onImportClick={handleImportClick}
+        onReorder={handleReorderSongs}
       />
     );
   };
