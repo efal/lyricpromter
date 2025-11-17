@@ -1,3 +1,5 @@
+# IMPORTANT: This file must be renamed to "netlify.toml" for Netlify to recognize it.
+
 # Netlify configuration for a static Single Page Application (SPA)
 
 # This rule is essential for SPAs. It ensures that any direct navigation
