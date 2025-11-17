@@ -184,12 +184,12 @@ const LyricsDisplay: React.FC<LyricsDisplayProps> = ({
       </div>
       
       <div className="fixed top-4 left-4">
-        <button onClick={onBack} className="p-3 rounded-full bg-black/40 backdrop-blur-sm hover:bg-white/20 transition-colors" title="Back to Library">
+        <button onClick={onBack} className="p-3 rounded-full bg-black/40 hover:bg-white/20 transition-colors" title="Back to Library">
             <BackIcon className="w-7 h-7" />
         </button>
       </div>
 
-      <div className="fixed bottom-0 left-0 right-0 bg-black/40 backdrop-blur-sm p-4 text-white">
+      <div className="fixed bottom-0 left-0 right-0 p-4 text-white">
         <div className="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
           
           <div className="w-full sm:w-80 flex flex-col justify-center gap-3">
