@@ -63,7 +63,7 @@ const App: React.FC = () => {
     }
     return [{
       id: `${Date.now()}`,
-      title: "Ein Entwicklertraum",
+      title: "A Developer's Dream",
       lyrics: PRESET_LYRICS,
       fontSize: 48,
       scrollSpeed: 1,
@@ -114,8 +114,8 @@ const App: React.FC = () => {
   const handleCreateNewSong = () => {
     const newSong: Song = {
         id: `${Date.now()}`,
-        title: "Neues Lied",
-        lyrics: "Schreibe hier deinen Liedtext...",
+        title: "New Song",
+        lyrics: "Start writing your lyrics here...",
         fontSize: 48,
         scrollSpeed: 1,
         bpm: 120,
@@ -132,10 +132,10 @@ const App: React.FC = () => {
   
   const handleDeleteSong = (songId: string) => {
     setModalConfig({
-        title: "Lied löschen",
-        message: "Möchtest du dieses Lied wirklich endgültig löschen?",
-        confirmText: "Löschen",
-        cancelText: "Abbrechen",
+        title: "Delete Song",
+        message: "Are you sure you want to permanently delete this song?",
+        confirmText: "Delete",
+        cancelText: "Cancel",
         onConfirm: () => {
             if (currentSongId === songId) {
                 setCurrentSongId(null);
@@ -168,12 +168,12 @@ const App: React.FC = () => {
         try {
             const result = event.target?.result;
             if (typeof result !== 'string') {
-                throw new Error('Datei konnte nicht als Text gelesen werden.');
+                throw new Error('File could not be read as text.');
             }
             const potentialSongs = JSON.parse(result);
 
             if (!Array.isArray(potentialSongs)) {
-                throw new Error('Ungültiges Dateiformat. Ein Array von Liedern wurde erwartet.');
+                throw new Error('Invalid file format. Expected an array of songs.');
             }
 
             const defaultSongValues = {
@@ -185,7 +185,7 @@ const App: React.FC = () => {
 
             const importedSongs: Song[] = potentialSongs.map((s: any, index: number) => {
                 if (typeof s !== 'object' || s === null || !s.title || !s.lyrics) {
-                    throw new Error(`Ungültige Lieddaten bei Index ${index}. Titel oder Text fehlt.`);
+                    throw new Error(`Invalid song data at index ${index}. Missing title or lyrics.`);
                 }
                 return {
                     id: s.id || `${Date.now()}-${index}`,
@@ -199,15 +199,15 @@ const App: React.FC = () => {
             });
             
             setModalConfig({
-                title: "Import bestätigen",
-                message: `Dies wird deine aktuelle Bibliothek vollständig durch ${importedSongs.length} Lied(er) aus der Datei ersetzen. Diese Aktion kann nicht rückgängig gemacht werden.`,
-                confirmText: "Bibliothek ersetzen",
-                cancelText: "Abbrechen",
+                title: "Confirm Library Import",
+                message: `This will completely replace your current library with ${importedSongs.length} song(s) from the file. This action cannot be undone.`,
+                confirmText: "Replace Library",
+                cancelText: "Cancel",
                 onConfirm: () => {
                   setSongs(importedSongs);
                   setModalConfig({
-                      title: "Import erfolgreich",
-                      message: `Bibliothek ersetzt! ${importedSongs.length} Lied(er) wurden importiert.`,
+                      title: "Import Successful",
+                      message: `Library replaced! ${importedSongs.length} song(s) have been imported.`,
                       confirmText: "OK",
                       onConfirm: () => setModalConfig(null),
                   });
@@ -216,10 +216,10 @@ const App: React.FC = () => {
 
         } catch (error) {
             console.error('Failed to import library:', error);
-            const errorMessage = error instanceof Error ? error.message : 'Ein unbekannter Fehler ist aufgetreten.';
+            const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred.';
             setModalConfig({
-                title: "Import fehlgeschlagen",
-                message: `Die Bibliothek konnte nicht importiert werden. Bitte stelle sicher, dass es sich um eine gültige JSON-Datei handelt, die von dieser App exportiert wurde. \n\nFehler: ${errorMessage}`,
+                title: "Import Failed",
+                message: `Could not import the library. Please ensure it's a valid JSON file exported from this app. \n\nError: ${errorMessage}`,
                 confirmText: "OK",
                 onConfirm: () => setModalConfig(null)
             });
@@ -231,8 +231,8 @@ const App: React.FC = () => {
     };
     reader.onerror = () => {
         setModalConfig({
-            title: "Dateifehler",
-            message: "Beim Lesen der Datei ist ein Fehler aufgetreten.",
+            title: "File Error",
+            message: "An error occurred while reading the file.",
             confirmText: "OK",
             onConfirm: () => setModalConfig(null),
         });
