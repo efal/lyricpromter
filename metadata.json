@@ -1,0 +1,7 @@
+{
+  "name": "Lyric Teleprompter",
+  "description": "A PWA that smoothly scrolls song lyrics on the screen. It features adjustable text size and scrolling speed, making it a perfect companion for musicians and speakers.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}

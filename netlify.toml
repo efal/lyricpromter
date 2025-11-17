@@ -1,0 +1,9 @@
+# Netlify configuration for a static Single Page Application (SPA)
+
+# This rule is essential for SPAs. It ensures that any direct navigation
+# to a route (e.g., myapp.netlify.app/some-page) is handled by your
+# index.html file, allowing your client-side router to take over.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
