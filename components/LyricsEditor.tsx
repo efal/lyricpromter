@@ -83,8 +83,8 @@ const LyricsEditor: React.FC<LyricsEditorProps> = ({ song, onSave, onStart, onBa
     setIsDirty(false);
     const saveButton = document.getElementById('save-button');
     if (saveButton) {
-        saveButton.innerText = "Saved!";
-        setTimeout(() => { saveButton.innerText = "Save Changes" }, 2000);
+        saveButton.innerText = "Gespeichert!";
+        setTimeout(() => { saveButton.innerText = "Änderungen speichern" }, 2000);
     }
   };
 
@@ -99,12 +99,12 @@ const LyricsEditor: React.FC<LyricsEditorProps> = ({ song, onSave, onStart, onBa
     <div className="flex flex-col h-screen p-4 sm:p-6 md:p-8">
       <header className="flex-shrink-0 flex flex-col xl:flex-row justify-between gap-4">
         <div className="flex items-center gap-4">
-            <button onClick={onBack} className="p-2 rounded-full hover:bg-gray-700 transition-colors" title="Back to Library">
+            <button onClick={onBack} className="p-2 rounded-full hover:bg-gray-700 transition-colors" title="Zurück zur Bibliothek">
                 <BackIcon className="w-6 h-6" />
             </button>
             <div>
-                <h1 className="text-3xl sm:text-4xl font-bold text-cyan-400">Edit Song</h1>
-                <p className="text-lg text-gray-400 mt-1">Modify the title, lyrics and settings below.</p>
+                <h1 className="text-3xl sm:text-4xl font-bold text-cyan-400">Lied bearbeiten</h1>
+                <p className="text-lg text-gray-400 mt-1">Ändere den Titel, den Text und die Einstellungen.</p>
             </div>
         </div>
         <div className="flex flex-col gap-4 bg-gray-800 p-4 rounded-lg">
@@ -125,7 +125,7 @@ const LyricsEditor: React.FC<LyricsEditorProps> = ({ song, onSave, onStart, onBa
                 disabled={!isDirty}
                 className="py-2 px-4 bg-gray-700 text-white font-semibold rounded-lg hover:bg-gray-600 active:bg-gray-800 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                Save Changes
+                Änderungen speichern
                 </button>
             </div>
             <div className="flex items-center gap-3">
@@ -146,19 +146,19 @@ const LyricsEditor: React.FC<LyricsEditorProps> = ({ song, onSave, onStart, onBa
             type="text"
             value={title}
             onChange={e => setTitle(e.target.value)}
-            placeholder="Song Title"
+            placeholder="Liedtitel"
             className="w-full bg-gray-800 border-2 border-gray-700 rounded-lg p-3 text-xl text-gray-100 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition-colors"
             />
             <textarea
             className="w-full h-full bg-gray-800 border-2 border-gray-700 rounded-lg p-4 text-lg text-gray-200 resize-none focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition-colors"
-            placeholder="Paste your lyrics here..."
+            placeholder="Füge hier deinen Liedtext ein..."
             value={lyrics}
             onChange={(e) => setLyrics(e.target.value)}
             spellCheck="false"
             />
         </div>
         <div className="hidden md:flex flex-col gap-2 h-full">
-            <h3 className="text-lg font-semibold text-gray-400">Live Preview</h3>
+            <h3 className="text-lg font-semibold text-gray-400">Live-Vorschau</h3>
             <div className="flex-grow bg-black rounded-lg border-2 border-gray-700 overflow-hidden relative">
                 <div className="absolute top-0 left-0 right-0 h-16 bg-gradient-to-b from-black to-transparent z-10 pointer-events-none"></div>
                 <div ref={previewScrollRef} className="h-full w-full overflow-y-auto hide-scrollbar">
@@ -170,7 +170,7 @@ const LyricsEditor: React.FC<LyricsEditorProps> = ({ song, onSave, onStart, onBa
                             paddingBottom: '100vh',
                         }}
                     >
-                        {lyrics || "Your text will appear here..."}
+                        {lyrics || "Dein Text wird hier erscheinen..."}
                     </div>
                 </div>
                 <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-black to-transparent z-10 pointer-events-none"></div>
@@ -183,7 +183,7 @@ const LyricsEditor: React.FC<LyricsEditorProps> = ({ song, onSave, onStart, onBa
           className="w-full py-4 px-6 bg-cyan-600 text-white text-xl font-bold rounded-lg hover:bg-cyan-500 active:bg-cyan-700 transition-all duration-200 transform active:scale-95 shadow-lg shadow-cyan-600/30 disabled:bg-gray-600 disabled:shadow-none disabled:cursor-not-allowed"
           disabled={!lyrics.trim()}
         >
-          Start Scrolling
+          Scrollen starten
         </button>
       </footer>
        <style>{`

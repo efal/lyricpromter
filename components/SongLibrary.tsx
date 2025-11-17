@@ -18,7 +18,7 @@ const SongLibrary: React.FC<SongLibraryProps> = ({ songs, onStart, onEdit, onDel
 
     const handleExport = () => {
         if (songs.length === 0) {
-            alert("Your library is empty. Nothing to export.");
+            alert("Deine Bibliothek ist leer. Nichts zu exportieren.");
             return;
         }
         try {
@@ -27,14 +27,14 @@ const SongLibrary: React.FC<SongLibraryProps> = ({ songs, onStart, onEdit, onDel
             const url = URL.createObjectURL(dataBlob);
             const link = document.createElement('a');
             link.href = url;
-            link.download = `lyric-teleprompter-library-${new Date().toISOString().split('T')[0]}.json`;
+            link.download = `songtext-teleprompter-bibliothek-${new Date().toISOString().split('T')[0]}.json`;
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
             URL.revokeObjectURL(url);
         } catch (error) {
-            console.error("Failed to export library:", error);
-            alert("An error occurred while exporting the library.");
+            console.error("Export der Bibliothek fehlgeschlagen:", error);
+            alert("Beim Exportieren der Bibliothek ist ein Fehler aufgetreten.");
         }
     };
 
@@ -87,18 +87,18 @@ const SongLibrary: React.FC<SongLibraryProps> = ({ songs, onStart, onEdit, onDel
         <div className="p-4 sm:p-6 md:p-8 max-w-4xl mx-auto">
             <header className="flex flex-col sm:flex-row justify-between sm:items-center gap-4 mb-8">
                 <div>
-                    <h1 className="text-3xl sm:text-4xl font-bold text-cyan-400">Song Library</h1>
-                    <p className="text-lg text-gray-400 mt-1">Manage your songs and settings.</p>
+                    <h1 className="text-3xl sm:text-4xl font-bold text-cyan-400">Liedbibliothek</h1>
+                    <p className="text-lg text-gray-400 mt-1">Verwalte deine Lieder und Einstellungen.</p>
                 </div>
                 <div className="flex items-center gap-2">
                     <button onClick={onImportClick} className="py-2 px-4 bg-gray-700 text-white font-semibold rounded-lg hover:bg-gray-600 transition-colors duration-200">
-                        Import
+                        Importieren
                     </button>
                     <button onClick={handleExport} className="py-2 px-4 bg-gray-700 text-white font-semibold rounded-lg hover:bg-gray-600 transition-colors duration-200">
-                        Export
+                        Exportieren
                     </button>
                     <button onClick={onCreate} className="py-2 px-4 bg-cyan-600 text-white font-semibold rounded-lg hover:bg-cyan-500 active:bg-cyan-700 transition-colors duration-200 flex items-center gap-2">
-                        <PlusIcon className="w-5 h-5"/> New Song
+                        <PlusIcon className="w-5 h-5"/> Neues Lied
                     </button>
                 </div>
             </header>
@@ -130,7 +130,7 @@ const SongLibrary: React.FC<SongLibraryProps> = ({ songs, onStart, onEdit, onDel
                                 >
                                     {showTopBorder && <div className="absolute top-0 left-4 right-4 h-1 bg-cyan-400 rounded-full -translate-y-1/2"></div>}
                                     <div className="flex items-center gap-3 flex-grow overflow-hidden p-4">
-                                        <div className="cursor-grab text-gray-500 hover:text-gray-300" title="Drag to reorder">
+                                        <div className="cursor-grab text-gray-500 hover:text-gray-300" title="Ziehen zum Sortieren">
                                             <DragHandleIcon className="w-5 h-5" />
                                         </div>
                                         <div className="flex-grow overflow-hidden mr-4">
@@ -141,9 +141,9 @@ const SongLibrary: React.FC<SongLibraryProps> = ({ songs, onStart, onEdit, onDel
                                         </div>
                                     </div>
                                     <div className="flex items-center gap-2 flex-shrink-0 pr-4">
-                                        <button onClick={() => onEdit(song.id)} className="p-2 rounded-full hover:bg-white/10 transition-colors" title="Edit Song"><EditIcon className="w-5 h-5"/></button>
-                                        <button onClick={() => onDelete(song.id)} className="p-2 rounded-full text-red-400 hover:bg-red-500/20 transition-colors" title="Delete Song"><TrashIcon className="w-5 h-5"/></button>
-                                        <button onClick={() => onStart(song.id)} className="p-3 rounded-full bg-cyan-600 hover:bg-cyan-500 transition-colors" title="Start Scrolling"><PlayIcon className="w-6 h-6"/></button>
+                                        <button onClick={() => onEdit(song.id)} className="p-2 rounded-full hover:bg-white/10 transition-colors" title="Lied bearbeiten"><EditIcon className="w-5 h-5"/></button>
+                                        <button onClick={() => onDelete(song.id)} className="p-2 rounded-full text-red-400 hover:bg-red-500/20 transition-colors" title="Lied löschen"><TrashIcon className="w-5 h-5"/></button>
+                                        <button onClick={() => onStart(song.id)} className="p-3 rounded-full bg-cyan-600 hover:bg-cyan-500 transition-colors" title="Scrollen starten"><PlayIcon className="w-6 h-6"/></button>
                                     </div>
                                     {showBottomBorder && <div className="absolute bottom-0 left-4 right-4 h-1 bg-cyan-400 rounded-full translate-y-1/2"></div>}
                                 </li>
@@ -152,8 +152,8 @@ const SongLibrary: React.FC<SongLibraryProps> = ({ songs, onStart, onEdit, onDel
                     </ul>
                 ) : (
                     <div className="text-center py-16 border-2 border-dashed border-gray-700 rounded-lg">
-                        <h2 className="text-2xl font-semibold text-gray-400">Your library is empty.</h2>
-                        <p className="text-gray-500 mt-2">Click "New Song" to get started.</p>
+                        <h2 className="text-2xl font-semibold text-gray-400">Deine Bibliothek ist leer.</h2>
+                        <p className="text-gray-500 mt-2">Klicke auf "Neues Lied", um zu beginnen.</p>
                     </div>
                 )}
             </main>
