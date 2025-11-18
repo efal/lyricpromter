@@ -11,7 +11,6 @@ const urlsToCache = [
   'index.tsx',
   'App.tsx',
   'types.ts',
-  'constants.ts',
   'components/LyricsEditor.tsx',
   'components/LyricsDisplay.tsx',
   'components/SongLibrary.tsx',
