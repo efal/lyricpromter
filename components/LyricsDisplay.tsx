@@ -89,7 +89,7 @@ const LyricsDisplay: React.FC<LyricsDisplayProps> = ({
     const setupAudio = async () => {
         try {
             if (!navigator.mediaDevices?.getUserMedia) {
-                alert('Microphone access is not supported by your browser.');
+                alert('Dein Browser unterstützt den Mikrofonzugriff nicht.');
                 return false;
             }
             streamRef.current = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -103,8 +103,8 @@ const LyricsDisplay: React.FC<LyricsDisplayProps> = ({
             audioContextRef.current = audioContext;
             return true;
         } catch (err) {
-            console.error('Error accessing microphone:', err);
-            alert('Could not access microphone. Please allow microphone permissions in your browser settings.');
+            console.error('Fehler beim Mikrofonzugriff:', err);
+            alert('Der Zugriff auf das Mikrofon war nicht möglich. Bitte erlaube den Mikrofonzugriff in deinen Browser-Einstellungen.');
             setIsListening(false);
             return false;
         }
@@ -184,7 +184,7 @@ const LyricsDisplay: React.FC<LyricsDisplayProps> = ({
       </div>
       
       <div className="fixed top-4 left-4">
-        <button onClick={onBack} className="p-3 rounded-full bg-black/40 hover:bg-white/20 transition-colors" title="Back to Library">
+        <button onClick={onBack} className="p-3 rounded-full bg-black/40 hover:bg-white/20 transition-colors" title="Zurück zur Bibliothek">
             <BackIcon className="w-7 h-7" />
         </button>
       </div>
@@ -200,7 +200,7 @@ const LyricsDisplay: React.FC<LyricsDisplayProps> = ({
                 value={fontSize}
                 onChange={(e) => onSettingsChange({ fontSize: parseInt(e.target.value, 10)})}
                 className="w-full h-2 bg-gray-600 rounded-lg appearance-none cursor-pointer slider-thumb"
-                aria-label="Font size"
+                aria-label="Schriftgröße"
               />
               <span className="w-16 text-right font-mono text-sm">{fontSize}px</span>
             </div>
@@ -211,11 +211,11 @@ const LyricsDisplay: React.FC<LyricsDisplayProps> = ({
                 value={scrollSpeed}
                 onChange={(e) => onSettingsChange({ scrollSpeed: parseFloat(e.target.value)})}
                 className="w-full h-2 bg-gray-600 rounded-lg appearance-none cursor-pointer slider-thumb"
-                aria-label="Scroll speed multiplier"
+                aria-label="Scroll-Geschwindigkeit"
               />
               <span className="w-16 text-right font-mono text-sm">{scrollSpeed.toFixed(1)}x</span>
             </div>
-             <div className="flex items-center gap-3 w-full" title="Auto-start volume threshold">
+             <div className="flex items-center gap-3 w-full" title="Lautstärkeschwelle für Autostart">
                 <VolumeIcon className="w-6 h-6 text-cyan-300 flex-shrink-0" />
                 <input
                     type="range"
@@ -225,14 +225,14 @@ const LyricsDisplay: React.FC<LyricsDisplayProps> = ({
                     value={micThreshold}
                     onChange={(e) => onSettingsChange({ micThreshold: parseInt(e.target.value, 10) })}
                     className="w-full h-2 bg-gray-600 rounded-lg appearance-none cursor-pointer slider-thumb"
-                    aria-label="Start threshold"
+                    aria-label="Start-Schwelle"
                 />
                 <span className="w-16 text-right font-mono text-sm">{micThreshold}</span>
             </div>
           </div>
           
           <div className="flex items-center gap-4">
-            <button onClick={handleResetScroll} className="p-3 rounded-full bg-white/10 hover:bg-white/20 transition-colors" title="Restart Scroll & Re-enable Mic">
+            <button onClick={handleResetScroll} className="p-3 rounded-full bg-white/10 hover:bg-white/20 transition-colors" title="Scrollen neustarten & Mikrofon aktivieren">
                 <svg xmlns="http://www.w3.org/2000/svg" className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h5M20 20v-5h-5" />
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 9a8 8 0 0113.52-5.96M20 15a8 8 0 01-13.52 5.96" />
@@ -247,7 +247,7 @@ const LyricsDisplay: React.FC<LyricsDisplayProps> = ({
             <button
               onClick={handleToggleListening}
               className={`p-3 rounded-full transition-colors ${isListening ? 'bg-red-500 hover:bg-red-400' : 'bg-white/10 hover:bg-white/20'}`}
-              title={isListening ? "Stop Listening" : "Enable Mic Listening"}
+              title={isListening ? "Zuhören beenden" : "Mikrofon aktivieren"}
             >
               {isListening ? <MicrophoneIcon className="w-7 h-7" /> : <MicrophoneOffIcon className="w-7 h-7" />}
             </button>
@@ -257,7 +257,7 @@ const LyricsDisplay: React.FC<LyricsDisplayProps> = ({
              {isListening && (
               <div className="text-center p-3 rounded-lg bg-black/30 flex items-center gap-3 animate-pulse">
                 <MicrophoneIcon className="w-6 h-6 text-red-400" />
-                <div className="font-semibold text-gray-300">Listening...</div>
+                <div className="font-semibold text-gray-300">Höre zu...</div>
               </div>
             )}
           </div>

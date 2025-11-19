@@ -1,4 +1,6 @@
-# IMPORTANT: This file must be renamed to "netlify.toml" for Netlify to recognize it.
+[build]
+  command = "npm run build"
+  publish = "dist"
 
 # Netlify configuration for a static Single Page Application (SPA)
 
